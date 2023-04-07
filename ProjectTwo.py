@@ -5,6 +5,14 @@ import keyboard
 import time
 import random
 
+# ---------------------------------------------------------------------------------------------------------------------
+
+# This project was made with different files that were congregated together for submission.
+# Each file will be separated with a marker such as the ones below and above this entry.
+
+# ---------------------------------------------------------------------------------------------------------------------
+# Player.py
+
 # Player class holds player information and methods.
 class Player:
     playerSprite = '8'    # The character that represents the player.
@@ -80,6 +88,8 @@ class Player:
         self.position[0] = 38
         display.playingField[self.position[1]][self.position[0]] = self.playerSprite
 
+# ---------------------------------------------------------------------------------------------------------------------
+# Room.py
 
 # Room class holds room information and acts as a node in a graph.
 class Room:
@@ -139,6 +149,9 @@ class Room:
             0 if self.east or collidesWithBorder(self.location[0] + 1, self.location[1]) else 1,
             0 if self.west or collidesWithBorder(self.location[0] - 1, self.location[1]) else 1
         ]
+
+# ---------------------------------------------------------------------------------------------------------------------
+# Map.py
 
 # Map class is a graph data structure that stores all the rooms.
 class Map:
@@ -439,6 +452,9 @@ class Map:
                 availableWalls[3] = 0
         return availableWalls
 
+# ---------------------------------------------------------------------------------------------------------------------
+# Game.py
+
 # This is the game class that houses the game itself, including game state, and the game loop.
 class Game:
     # Game state variables.
@@ -579,6 +595,9 @@ class Game:
 
         print('Game over!')
 
+# ---------------------------------------------------------------------------------------------------------------------
+# Controller.py
+
 # Controller class that handles all input. This runs asynchronously to prevent input delay/misses.
 class Controller:
     currentInput = [
@@ -632,6 +651,8 @@ class Controller:
         else:
             return 0
 
+# ---------------------------------------------------------------------------------------------------------------------
+# Display.py
 
 # A display class that will handle all the output operations (Stuff to do with the screen).
 class Display:
@@ -691,6 +712,9 @@ class Display:
     def clearMessage(self):
         self.message = ''
 
+# ---------------------------------------------------------------------------------------------------------------------
+# Engine.py
+
 # An engine class to operate the different threads for input/output along with the game itself.
 class Engine:
     def start(self):
@@ -707,6 +731,9 @@ class Engine:
         # Controller must run in parallel with game in order for input to be measured constantly.
         conTask.start()
         gameTask.start()
+
+# ---------------------------------------------------------------------------------------------------------------------
+# main.py (Entry Point)
 
 def main():
     engine = Engine()    # Create a new game engine.
