@@ -2,7 +2,9 @@ import assets.game.Map
 import assets.game.Player
 import time
 
+# This is the game class that houses the game itself, including game state, and the game loop.
 class Game:
+    # Game state variables.
     currentRoom = None
     score = 0
     itemTotal = 0
@@ -36,21 +38,23 @@ class Game:
         self.score = 0
         self.itemTotal = 0
 
+    # This is the main game loop.
     def main(self, display, controller):
-        self.reset()
+        # Build the game first.
+        self.reset()    # reset game variables.
         self.displayStory(display, controller)
         gameMap = assets.game.Map.Map()
-        gameMap.reset()
-        gameMap.setSeed()
-        self.itemTotal = gameMap.build()
-        numOfRooms = gameMap.getNumberOfRooms()
+        gameMap.reset()    # Map will keep using the same memory space, this is needed to reset the map state.
+        self.itemTotal = gameMap.build()    # Build the map and set the itemTotal.
         player = assets.game.Player.Player()
         self.currentRoom = gameMap.startRoom
-        display.update(self.currentRoom.sprite.graphic)
+        display.update(gameMap.sprite)
         player.position = [19, 18]
-        display.playingField[player.position[1]][player.position[0]] = player.playerSprite
+        display.playingField[player.position[1]][player.position[0]] = player.playerSprite  # Add the player to screen.
+        display.clearMessage()
         display.render()
 
+        # Start the actual loop
         while 1:
             if not self.currentRoom.startRoom:
                 if self.currentRoom.villainRoom:
@@ -118,15 +122,6 @@ class Game:
                     display.clearScreen()
                     break
 
-            # Debug block
-            display.message = 's = ' + str(self.currentRoom.startRoom) + '\nm = ' \
-                              + str(self.currentRoom.mainRoom) + '\nc = ' \
-                              + str(self.currentRoom.corridor) + '\nv = ' \
-                              + str(self.currentRoom.villainRoom) + '\npv = ' \
-                              + str(self.currentRoom.potentialVillainRoom) + '\nseed = ' \
-                              + str(gameMap.seed) + '\nrooms = ' \
-                              + str(numOfRooms)
-
             display.render()
             time.sleep(0.005)
 
@@ -140,6 +135,7 @@ class Game:
                 print('retrying')
                 break
 
+    # start method and main game loop are separate for improved readability.
     def start(self, display, controller):
         while self.retry:
             self.main(display, controller)

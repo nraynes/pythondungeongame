@@ -1,6 +1,7 @@
 import keyboard
 import time
 
+# Controller class that handles all input. This runs asynchronously to prevent input delay/misses.
 class Controller:
     currentInput = [
         0,  # Up command, index 0
@@ -8,10 +9,10 @@ class Controller:
         0,  # Right command, index 2
         0   # Left command, index 3
     ]
-    forceEnd = 0
 
+    # start function will start the loop where input is checked.
     def start(self):
-        while not self.forceEnd:
+        while 1:
             if keyboard.is_pressed('w'):
                 if self.currentInput[0] != 1:
                     self.currentInput[0] = 1
@@ -36,13 +37,11 @@ class Controller:
             else:
                 if self.currentInput[3] != 0:
                     self.currentInput[3] = 0
-            if keyboard.is_pressed('p'):
-                self.forceEnd = 1
-            time.sleep(0.001)
+            time.sleep(0.001)    # Sleep is to prevent lag.
 
-    def end(self):
-        self.forceEnd = 1
-
+    # getInput function takes in the name of a command and returns
+    # the current status on whether that command is being input
+    # by the user.
     def getInput(self, command):
         if command == 'up':
             return self.currentInput[0]

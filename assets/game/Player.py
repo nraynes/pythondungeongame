@@ -1,7 +1,10 @@
+# Player class holds player information and methods.
 class Player:
-    playerSprite = '8'
-    position = [0, 0]
+    playerSprite = '8'    # The character that represents the player.
+    position = [0, 0]    # The current position of the player on the field.
 
+    # getCollision function takes in the display object and optionally coordinates and returns whether
+    # the player is colliding with a wall (Returns 1), an item (Returns 2), or nothing (Returns 0).
     def getCollision(self, display, x=-1, y=-1):
         if x == -1:
             x = self.position[0]
@@ -13,6 +16,9 @@ class Player:
             return 2
         return 0
 
+    # Next four functions are for moving the player. Takes in the display object and will check
+    # whether the player is going to collide with something, then either update the players position
+    # if applicable, and return whatever the player may have been colliding with. (Returns either 0; 1; or 2)
     def moveUp(self, display):
         willCollide = self.getCollision(display, self.position[0], self.position[1]-1)
         if willCollide != 1:
@@ -45,6 +51,8 @@ class Player:
             display.playingField[self.position[1]][self.position[0]] = self.playerSprite
         return willCollide
 
+    # Next four functions will place the player at a predetermined position on the field.
+    # This is used to place the player in the right position when moving between rooms.
     def setUp(self, display):
         display.playingField[self.position[1]][self.position[0]] = ' '
         self.position[1] = 1
